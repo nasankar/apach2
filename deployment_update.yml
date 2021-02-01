@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: apache2
+spec: 
+  replicas: 1
+  selector: 
+    matchLabels: 
+      app: apache2
+  template: 
+    metadata: 
+      labels: 
+        app: apache2
+    spec: 
+      containers: 
+        - 
+          image: "nambisankaran/devopslabel:apache22image"
+          imagePullPolicy: Always
+          name: apache2
+          ports: 
+            - 
+              containerPort: 80
+              protocol: TCP
+          resources: 
+            limits: 
+              cpu: 250m
+              memory: 256Mi
+            requests: 
+              cpu: 250m
+              memory: 256Mi
+          volumeMounts:
+          - name: apache2
+            mountPath: /home/ubuntu/apache2pv
+      volumes:
+      - name: apache2
+        persistentVolumeClaim:
+            claimName: apache2
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+   name: apache2
+spec:
+   type: LoadBalancer
+   ports:
+   - name: apache2
+     protocol: TCP
+     port: 8081
+     targetPort: 80
+   selector:
+     app: apache2
+
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: apache2
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+  storageClassName: azurefile
