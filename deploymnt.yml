@@ -14,7 +14,7 @@ spec:
     spec: 
       containers: 
         - 
-          image: "nambisankaran/devopslabel:apache2image"
+          image: "nambisankaran/devopslabel:apache22image"
           imagePullPolicy: Always
           name: apache2
           ports: 
