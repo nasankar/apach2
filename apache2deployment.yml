@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apache2
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+       app: apache2.replicas
+  template:
+    metadata:
+        labels:
+         app: apache2.template
+   spec:
+     containers:
+     - 
+       image: nambisankaran/devopslabel:apache2image
+       imagePullPolicy: Always
+       resources:
+         cpu: 250m
+         memory: 256Mi
+       limits:
+         cpu: 250m
+         memory: 256Mi
+    ports:
+     - 
+       containerport: 80
+       protocol: TCP
